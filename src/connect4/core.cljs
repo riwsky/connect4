@@ -30,15 +30,14 @@
 (def config {:ncols 7 :nrows 6 :cellwidth 100})
 
 
-(defn x->col [x]
-  (int (/ x (:cellwidth config))))
-
-
-(defcomponent circle [{:keys [c r color]} owner]
+(defcomponent circle [{:keys [c r color moves]} owner]
   (render [_]
                    (dom/circle
                     {:cx (+ 40 (* (:cellwidth config) c)) :cy (+ 50 (* 100 r)) :r 40 :fill color}))
   (display-name [_] "Circle")
+  (did-mount [_]
+     (events/listen (om/get-node owner) EventType.CLICK #(async/put! moves c))
+       )
   )
 
 (defn print-player-message [controller current-player]
@@ -59,13 +58,13 @@
 
 (defcomponent many-circles [data owner]
   (render [_]
-          (dom/div {:style {:width (* 100 (:ncols config)) :margin "auto"} :on-click #(async/put! (:moves-chan @data) (x->col (.. % -nativeEvent -offsetX)))}
+          (dom/div {:style {:width (* 100 (:ncols config)) :margin "auto"}}
                    (dom/svg {:width (* 100 (:ncols config)) :height (* 100 (:nrows config))}
                             (for [c (range (:ncols config))
                                   r (range (:nrows config))
                                   :let [color (colors (get-in data [:state :board c r]))]
                                   ]
-                              (->circle {:c c :r r :color color})
+                              (->circle {:c c :r r :color color :moves (:moves-chan data)})
                               ))
                    (print-player-message (:controller data) (get-in data [:state :current-turn]))
                    )
