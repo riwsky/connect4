@@ -95,7 +95,6 @@ htmlForGameId gId controller =
                     H.script H.! HA.src "http://fb.me/react-0.9.0.js" $ ""
                     H.script H.! HA.src "out/goog/base.js" H.! HA.type_ "text/javascript" $ ""
                     H.script H.! HA.src "connect4.js" H.! HA.type_ "text/javascript" $ ""
-                    H.script H.! HA.type_ "text/javascript" H.! HA.id "lt_ws" H.! HA.src "http://localhost:52345/socket.io/lighttable/ws.js" $ ""
                     H.script H.! HA.type_ "text/javascript" $ H.toHtml $ "window.gameConfig = " ++ gameConfig ++ ";"
                     H.script H.! HA.type_ "text/javascript" $ "goog.require(\"connect4.core\")"
 

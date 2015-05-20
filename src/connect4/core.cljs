@@ -47,8 +47,6 @@
               :font-family "\"Comic Sans MS\", cursive, sans-serif"
               :color (current-player colors)
               :margin "auto"}}
-           (prn controller)
-           (prn current-player)
            (str (if (= controller current-player)
                   "Your"
                   "Opponent's"
